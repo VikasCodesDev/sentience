@@ -14,24 +14,45 @@ import NavNodes from "@/components/ui/NavNodes";
 import CommandBar from "@/components/ui/CommandBar";
 import AITerminal from "@/components/ui/AITerminal";
 
+type Log = {
+  type: "system" | "user" | "ai" | "error";
+  text: string;
+};
 
 export default function Home() {
-  const [logs, setLogs] = useState<string[]>([
-    "SENTIENCE CORE INITIALIZED",
-    "Awaiting command...",
+  const [logs, setLogs] = useState<Log[]>([
+    { type: "system", text: "SENTIENCE CORE INITIALIZED" },
+    { type: "system", text: "Awaiting command..." },
   ]);
 
-  function handleCommand(cmd: string) {
-    const lower = cmd.toLowerCase();
+  const [loading, setLoading] = useState(false);
 
-    let response = "Command acknowledged.";
+  async function handleCommand(cmd: string) {
+    setLoading(true);
 
-    if (lower.includes("hello")) response = "Greetings, Operator.";
-    else if (lower.includes("status")) response = "All systems operational.";
-    else if (lower.includes("help"))
-      response = "Available commands: hello, status, help";
+    try {
+      const res = await fetch("http://localhost:5000/api/ai/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: cmd }),
+      });
 
-    setLogs((prev) => [...prev, `> ${cmd}`, response]);
+      const data = await res.json();
+
+      setLogs((prev) => [
+        ...prev,
+        { type: "ai", text: data.reply || "No response." },
+      ]);
+    } catch (err) {
+      setLogs((prev) => [
+        ...prev,
+        { type: "error", text: "Connection to AI failed." },
+      ]);
+    }
+
+    setLoading(false);
   }
 
   return (
@@ -54,7 +75,7 @@ export default function Home() {
       {/* LEFT AI TERMINAL */}
       <div className="pointer-events-none fixed left-6 top-1/2 z-50 -translate-y-1/2">
         <div className="pointer-events-auto">
-          <AITerminal logs={logs} />
+          <AITerminal logs={logs} loading={loading} />
         </div>
       </div>
 
