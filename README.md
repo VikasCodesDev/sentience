@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+SENTIENCE — Futuristic AI Interface System 🌌
 
-## Getting Started
+SENTIENCE is a next-generation AI operating interface — a cinematic, Gen-Z futuristic platform that combines conversational AI, system-like controls, knowledge memory, tools, and intelligent automation into one immersive experience.
 
-First, run the development server:
+🚀Overview
+SENTIENCE is not just a chatbot.
+It is designed as a living AI system interface — similar to a sci-fi OS core — capable of:
+Conversational intelligence
+Multi-modal inputs (text, files, images)
+Persistent memory
+Tool execution
+Coding assistance
+Knowledge storage
+Real-time system interaction
+Expandable AI architecture
+Built as a flagship portfolio project showcasing Full-Stack + AI + Advanced UI Engineering.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🧠 Core Features
+🤖 Conversational AI Core
+Natural language interaction
+Context-aware replies
+Personality modes (Core, Analyst, Creative, Cyber, Tutor)
+Persistent conversation memory
+Futuristic AI tone
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🧩 Cognitive Engine
+Detects user intent and routes to appropriate system modules:
+Mode switching
+Tool invocation
+Coding requests
+Knowledge queries
+Utility commands
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+💻 Coding Engine (DEV-CORE)
+Elite software assistant for developers:
+Production-ready code generation
+Clean architecture suggestions
+Debugging help
+Explanations on demand
+Low-temperature precise outputs
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🧠 Persistent Memory System
+Remembers conversation context across sessions:
+Stores recent dialogue
+Memory trimming for performance
+Clear memory command
+File-based persistence
 
-## Learn More
+📁 Knowledge & File Memory
+Upload documents to extend AI knowledge base:
+Stores extracted content
+Injects into AI context
+Enables document-aware responses
+Works across sessions
 
-To learn more about Next.js, take a look at the following resources:
+🛠️ Built-in Tools
+Local utilities:
+⏰ Time / Date
+🧮 Calculations
+🧹 Memory management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+External integrations:
+🌤 Weather lookup
+📰 News fetching
+🌐 IP detection
+😂 Joke generator
+💬 Quotes
+🎭 Personality Modes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🎨 Interface Features
+🌌 Cinematic UI Experience
+Futuristic orbital core visualization
+Space-themed interface
+Animated background
+HUD elements
+System-style panels
 
-## Deploy on Vercel
+🖱️ Advanced Interaction Effects
+Orb cursor
+Cursor trails
+Magnetic UI effects
+Click ripple feedback
+Smooth animations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🧩 Command Bar
+Central input system:
+Text commands
+File upload trigger
+Execution controls
+Real-time processing feedback
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🖥️ AI Terminal Panel
+Displays system logs and AI responses in terminal style.
+
+🧭 Navigation Nodes
+System modules (UI buttons):
+CORE
+NETWORK
+MEMORY
+ANALYTICS
+Designed for future expansion into functional subsystems.
+
+🏗️ System Architecture
+Frontend
+Next.js (App Router)
+React
+TypeScript
+Tailwind CSS
+Custom UI components
+Advanced animation layers
+
+Backend
+Node.js
+Express.js
+TypeScript
+REST API architecture
+Modular service design
+AI Integration
+Groq API (Llama models)
+Prompt engineering layer
+Personality injection
+Context assembly pipeline
+Data & Storage
+File-based memory store
+Uploaded file repository
+JSON persistence
+Local processing pipeline
