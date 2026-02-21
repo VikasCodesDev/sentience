@@ -4,12 +4,12 @@ import API_BASE from "@/lib/api";
 
 import { useState, useEffect, useRef } from "react";
 
-type Log = { type: string; text: string; timestamp?: string };
+type Log = { type: "system" | "user" | "ai" | "error" | "file" | "tool"; text: string; timestamp?: string; streaming?: boolean };
 type Props = {
   panel: string;
   onClose: () => void;
   onToast: (msg: string, type?: "success" | "error" | "info") => void;
-  onLog?: (log: Log) => void;
+  onLog?: (log: { type: "system" | "user" | "ai" | "error" | "file" | "tool"; text: string; timestamp?: string; streaming?: boolean }) => void;
   onSimMsg?: (msg: string) => void;
 };
 
