@@ -457,7 +457,7 @@ function MemoryContent({ tab, onToast }: { tab: string; onToast: any }) {
     setShowAddNote(false);
     setNewNote({title:"",content:"",type:"note"});
     fetch(`${API_BASE}/api/vault`).then(r=>r.json()).then(d=>setVault(d.items||[]));
-    onToast("Saved to vault","success`);
+    onToast("Saved to vault","success");
   }
 
   async function deleteVaultItem(id: string) {
@@ -608,14 +608,14 @@ function AnalyticsContent({ tab, onToast, onLog }: { tab: string; onToast: any; 
       setTasks(prev=>[...prev, d.task]);
       setShowAddTask(false);
       setNewTask({name:"",description:"",type:"once",intervalMs:30000});
-      onToast("Task created","success`);
+      onToast("Task created","success");
     }
   }
 
   async function deleteTask(id: string) {
     await fetch(`${API_BASE}/api/tasks/${id}`,{method:"DELETE"});
     setTasks(prev=>prev.filter(t=>t.id!==id));
-    onToast("Task cancelled","info`);
+    onToast("Task cancelled","info");
   }
 
   async function runTask(id: string) {

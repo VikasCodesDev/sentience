@@ -73,7 +73,7 @@ export default function AITerminal({
       const data = await res.json();
       onLoadConversation(id, data.messages || []);
       setShowConvs(false);
-    } catch { onToast?.("Failed to load conversation", "error`); }
+    } catch { onToast?.("Failed to load conversation", "error"); }
   }
 
   async function deleteConversation(id: string, e: React.MouseEvent) {
