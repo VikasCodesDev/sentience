@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "SENTIENCE",
   description: "A cosmic AI consciousness space",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
