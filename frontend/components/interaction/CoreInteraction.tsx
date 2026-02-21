@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
@@ -7,7 +8,7 @@ import * as THREE from "three";
 export default function CoreInteraction({
   targetRef,
 }: {
-  targetRef: React.RefObject<THREE.Object3D>;
+  targetRef: React.RefObject<THREE.Object3D | null>;
 }) {
   const { mouse } = useThree();
   const glowRef = useRef<THREE.Mesh>(null);
@@ -17,14 +18,11 @@ export default function CoreInteraction({
 
     const t = clock.getElapsedTime();
 
-    // 🧲 Distance from cursor center
     const intensity = 1 - Math.min(1, Math.hypot(mouse.x, mouse.y));
 
-    // ✨ Pulse based on proximity
     const scale = 1.2 + intensity * 0.6 + Math.sin(t * 2) * 0.05;
     glowRef.current.scale.setScalar(scale);
 
-    // 🌈 Glow opacity
     (glowRef.current.material as THREE.MeshBasicMaterial).opacity =
       0.08 + intensity * 0.25;
   });

@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
@@ -116,7 +118,7 @@ export default function AdvancedAICore() {
           opacity={0.7}
         />
       </points>
-      <CoreInteraction targetRef={coreRef} />
+      <CoreInteraction targetRef={coreRef as React.RefObject<THREE.Object3D | null>} />
     </group>
   );
 }
