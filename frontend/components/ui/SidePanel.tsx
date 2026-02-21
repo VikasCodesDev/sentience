@@ -1,5 +1,7 @@
 "use client";
 
+import API_BASE from "@/lib/api";
+
 import { useState, useEffect, useRef } from "react";
 
 type Log = { type: string; text: string; timestamp?: string };
@@ -124,9 +126,9 @@ function CoreContent({ tab, onToast }: { tab: string; onToast: any }) {
   const [reflectLoading, setReflectLoading] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/system/overview").then(r=>r.json()).then(setData).catch(()=>{});
+    fetch(`${API_BASE}/api/system/overview`).then(r=>r.json()).then(setData).catch(()=>{});
     if (tab === "Processes") {
-      fetch("http://localhost:5000/api/system/processes").then(r=>r.json()).then(d=>setProcesses(d.processes||[])).catch(()=>{});
+      fetch(`${API_BASE}/api/system/processes`).then(r=>r.json()).then(d=>setProcesses(d.processes||[])).catch(()=>{});
     }
   }, [tab]);
 
@@ -136,7 +138,7 @@ function CoreContent({ tab, onToast }: { tab: string; onToast: any }) {
     setTermOutput(prev => [...prev, `$ ${cmd}`]);
     setTermInput("");
     try {
-      const res = await fetch("http://localhost:5000/api/system/simulate-command", {
+      const res = await fetch(`${API_BASE}/api/system/simulate-command`, {
         method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({command: cmd})
       });
       const d = await res.json();
@@ -148,7 +150,7 @@ function CoreContent({ tab, onToast }: { tab: string; onToast: any }) {
   async function startSim() {
     setSimLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/simulation/start", {
+      const res = await fetch(`${API_BASE}/api/simulation/start`, {
         method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({type: simType, topic: simTopic})
       });
       const d = await res.json();
@@ -165,7 +167,7 @@ function CoreContent({ tab, onToast }: { tab: string; onToast: any }) {
     setSimMessages(prev => [...prev, {role:"user",content:msg}]);
     setSimLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/simulation/message", {
+      const res = await fetch(`${API_BASE}/api/simulation/message`, {
         method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({sessionId:simSession, message:msg})
       });
       const d = await res.json();
@@ -178,7 +180,7 @@ function CoreContent({ tab, onToast }: { tab: string; onToast: any }) {
     if (!reflectInput.trim()) return;
     setReflectLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/simulation/reflect", {
+      const res = await fetch(`${API_BASE}/api/simulation/reflect`, {
         method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({prompt:reflectInput})
       });
       const d = await res.json();
@@ -336,8 +338,8 @@ function NetworkContent({ tab, onToast }: { tab: string; onToast: any }) {
   const [tools, setTools] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/status/network").then(r=>r.json()).then(setData).catch(()=>{});
-    fetch("http://localhost:5000/api/system/tools").then(r=>r.json()).then(d=>setTools(d.tools||[])).catch(()=>{});
+    fetch(`${API_BASE}/api/status/network`).then(r=>r.json()).then(setData).catch(()=>{});
+    fetch(`${API_BASE}/api/system/tools`).then(r=>r.json()).then(d=>setTools(d.tools||[])).catch(()=>{});
   }, []);
 
   if (tab === "Status") return data ? (
@@ -414,52 +416,52 @@ function MemoryContent({ tab, onToast }: { tab: string; onToast: any }) {
 
   useEffect(() => {
     if (tab === "Personal") {
-      fetch("http://localhost:5000/api/memory").then(r=>r.json()).then(setPersonalMem).catch(()=>{});
+      fetch(`${API_BASE}/api/memory`).then(r=>r.json()).then(setPersonalMem).catch(()=>{});
     }
     if (tab === "Vault") {
-      fetch("http://localhost:5000/api/vault").then(r=>r.json()).then(d=>setVault(d.items||[])).catch(()=>{});
+      fetch(`${API_BASE}/api/vault`).then(r=>r.json()).then(d=>setVault(d.items||[])).catch(()=>{});
     }
     if (tab === "Conversations") {
-      fetch("http://localhost:5000/api/conversations").then(r=>r.json()).then(d=>setConversations(d.conversations||[])).catch(()=>{});
+      fetch(`${API_BASE}/api/conversations`).then(r=>r.json()).then(d=>setConversations(d.conversations||[])).catch(()=>{});
     }
     if (tab === "Files") {
-      fetch("http://localhost:5000/api/files/list").then(r=>r.json()).then(d=>setFiles(d.files||[])).catch(()=>{});
+      fetch(`${API_BASE}/api/files/list`).then(r=>r.json()).then(d=>setFiles(d.files||[])).catch(()=>{});
     }
   }, [tab]);
 
   async function addFact() {
     if (!newFact.trim()) return;
-    await fetch("http://localhost:5000/api/memory/fact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fact:newFact})});
+    await fetch(`${API_BASE}/api/memory/fact`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fact:newFact})});
     setNewFact("");
-    fetch("http://localhost:5000/api/memory").then(r=>r.json()).then(setPersonalMem);
+    fetch(`${API_BASE}/api/memory`).then(r=>r.json()).then(setPersonalMem);
     onToast("Memory stored", "success");
   }
 
   async function setName() {
     if (!userName.trim()) return;
-    await fetch("http://localhost:5000/api/memory/name",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:userName})});
+    await fetch(`${API_BASE}/api/memory/name`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:userName})});
     setUserName("");
-    fetch("http://localhost:5000/api/memory").then(r=>r.json()).then(setPersonalMem);
+    fetch(`${API_BASE}/api/memory`).then(r=>r.json()).then(setPersonalMem);
     onToast("Name stored", "success");
   }
 
   async function clearPersonalMemory() {
-    await fetch("http://localhost:5000/api/memory",{method:"DELETE"});
-    fetch("http://localhost:5000/api/memory").then(r=>r.json()).then(setPersonalMem);
+    await fetch(`${API_BASE}/api/memory`,{method:"DELETE"});
+    fetch(`${API_BASE}/api/memory`).then(r=>r.json()).then(setPersonalMem);
     onToast("Personal memory cleared","info");
   }
 
   async function addVaultItem() {
     if (!newNote.title || !newNote.content) return;
-    await fetch("http://localhost:5000/api/vault",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(newNote)});
+    await fetch(`${API_BASE}/api/vault`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(newNote)});
     setShowAddNote(false);
     setNewNote({title:"",content:"",type:"note"});
-    fetch("http://localhost:5000/api/vault").then(r=>r.json()).then(d=>setVault(d.items||[]));
-    onToast("Saved to vault","success");
+    fetch(`${API_BASE}/api/vault`).then(r=>r.json()).then(d=>setVault(d.items||[]));
+    onToast("Saved to vault","success`);
   }
 
   async function deleteVaultItem(id: string) {
-    await fetch(`http://localhost:5000/api/vault/${id}`,{method:"DELETE"});
+    await fetch(`${API_BASE}/api/vault/${id}`,{method:"DELETE"});
     setVault(prev=>prev.filter(v=>v.id!==id));
     onToast("Deleted","info");
   }
@@ -573,7 +575,7 @@ function MemoryContent({ tab, onToast }: { tab: string; onToast: any }) {
         </div>
         {Array.isArray(files) && files.length > 0 && (
           <button
-            onClick={async () => { await fetch("http://localhost:5000/api/files/clear",{method:"DELETE"}); setFiles([]); }}
+            onClick={async () => { await fetch(`${API_BASE}/api/files/clear`,{method:"DELETE"}); setFiles([]); }}
             className="w-full mt-3 py-1.5 text-xs text-red-400 border border-red-400/20 rounded-lg hover:bg-red-500/10 transition-all"
           >Clear File Memory</button>
         )}
@@ -593,33 +595,33 @@ function AnalyticsContent({ tab, onToast, onLog }: { tab: string; onToast: any; 
   const [showAddTask, setShowAddTask] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/status/analytics").then(r=>r.json()).then(setData).catch(()=>{});
-    fetch("http://localhost:5000/api/tasks").then(r=>r.json()).then(d=>setTasks(d.tasks||[])).catch(()=>{});
-    fetch("http://localhost:5000/api/system/logs").then(r=>r.json()).then(d=>setLogs(d.logs||[])).catch(()=>{});
+    fetch(`${API_BASE}/api/status/analytics`).then(r=>r.json()).then(setData).catch(()=>{});
+    fetch(`${API_BASE}/api/tasks`).then(r=>r.json()).then(d=>setTasks(d.tasks||[])).catch(()=>{});
+    fetch(`${API_BASE}/api/system/logs`).then(r=>r.json()).then(d=>setLogs(d.logs||[])).catch(()=>{});
   }, [tab]);
 
   async function createTask() {
     if (!newTask.name || !newTask.description) return;
-    const res = await fetch("http://localhost:5000/api/tasks",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(newTask)});
+    const res = await fetch(`${API_BASE}/api/tasks`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(newTask)});
     const d = await res.json();
     if (d.success) {
       setTasks(prev=>[...prev, d.task]);
       setShowAddTask(false);
       setNewTask({name:"",description:"",type:"once",intervalMs:30000});
-      onToast("Task created","success");
+      onToast("Task created","success`);
     }
   }
 
   async function deleteTask(id: string) {
-    await fetch(`http://localhost:5000/api/tasks/${id}`,{method:"DELETE"});
+    await fetch(`${API_BASE}/api/tasks/${id}`,{method:"DELETE"});
     setTasks(prev=>prev.filter(t=>t.id!==id));
-    onToast("Task cancelled","info");
+    onToast("Task cancelled","info`);
   }
 
   async function runTask(id: string) {
-    await fetch(`http://localhost:5000/api/tasks/${id}/run`,{method:"POST"});
+    await fetch(`${API_BASE}/api/tasks/${id}/run`,{method:"POST"});
     onToast("Task triggered","success");
-    setTimeout(()=>fetch("http://localhost:5000/api/tasks").then(r=>r.json()).then(d=>setTasks(d.tasks||[])),2000);
+    setTimeout(()=>fetch(`${API_BASE}/api/tasks`).then(r=>r.json()).then(d=>setTasks(d.tasks||[])),2000);
   }
 
   const maxLatency = Math.max(...(data?.recentLatencies || [1]), 1);

@@ -1,5 +1,7 @@
 "use client";
 
+import API_BASE from "@/lib/api";
+
 import { useEffect, useState, useCallback } from "react";
 
 type Props = {
@@ -14,10 +16,10 @@ export default function PanelModal({ panel, onClose, onClearMemory }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const endpointMap: Record<string, string> = {
-    CORE: "http://localhost:5000/api/status/core",
-    NETWORK: "http://localhost:5000/api/status/network",
-    MEMORY: "http://localhost:5000/api/status/memory",
-    ANALYTICS: "http://localhost:5000/api/status/analytics",
+    CORE: `${API_BASE}/api/status/core`,
+    NETWORK: `${API_BASE}/api/status/network`,
+    MEMORY: `${API_BASE}/api/status/memory`,
+    ANALYTICS: `${API_BASE}/api/status/analytics`,
   };
 
   const fetchData = useCallback(async () => {
@@ -43,8 +45,8 @@ export default function PanelModal({ panel, onClose, onClearMemory }: Props) {
 
   async function clearMemory() {
     try {
-      await fetch("http://localhost:5000/api/files/clear", { method: "DELETE" });
-      await fetch("http://localhost:5000/api/ai/ask", {
+      await fetch(`${API_BASE}/api/files/clear`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/ai/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: "clear memory" }),

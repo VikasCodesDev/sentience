@@ -16,6 +16,7 @@ import Toast             from "@/components/ui/Toast";
 import Footer            from "@/components/ui/Footer";
 import CommandPalette    from "@/components/ui/CommandPalette";
 import ThemeSwitcher     from "@/components/ui/ThemeSwitcher";
+import API_BASE          from "@/lib/api";
 
 export type Log = {
   type: "system" | "user" | "ai" | "error" | "file" | "tool";
@@ -49,13 +50,13 @@ export default function Home() {
   const [toasts,        setToasts]        = useState<ToastMsg[]>([]);
   const [showPalette,   setShowPalette]   = useState(false);
   const [isMobile,      setIsMobile]      = useState(false);
-  const [hudHeight,     setHudHeight]     = useState(148); // measured HUD height — gap below neural load
+  const [hudHeight,     setHudHeight]     = useState(148);
 
-  const toastId        = useRef(0);
-  const streamIdxRef   = useRef(-1);
-  const hudRef         = useRef<HTMLDivElement>(null);
+  const toastId      = useRef(0);
+  const streamIdxRef = useRef(-1);
+  const hudRef       = useRef<HTMLDivElement>(null);
 
-  // ── Detect mobile ──────────────────────────────────────────────────────────
+  // Detect mobile
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
@@ -63,20 +64,20 @@ export default function Home() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // ── Measure HUD panel height dynamically ───────────────────────────────────
+  // Measure HUD panel height dynamically
   useEffect(() => {
-    if (!hudRef.current) return;
+    const el = hudRef.current;
+    if (!el) return;
     const observer = new ResizeObserver(() => {
       if (hudRef.current) {
-        // top-6 = 24px, plus actual panel height, plus 12px gap
         setHudHeight(24 + hudRef.current.offsetHeight + 20);
       }
     });
-    observer.observe(hudRef.current);
+    observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // ── Ctrl+K → Command Palette ───────────────────────────────────────────────
+  // Ctrl+K → Command Palette
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "k") { e.preventDefault(); setShowPalette(p => !p); }
@@ -86,14 +87,14 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  // ── Restore conversation on mount ──────────────────────────────────────────
+  // Restore conversation on mount
   useEffect(() => {
     const ts = new Date().toLocaleTimeString();
     let savedId = localStorage.getItem(STORAGE_KEY);
     if (!savedId) { savedId = "conv_" + Date.now(); localStorage.setItem(STORAGE_KEY, savedId); }
     setConversationId(savedId);
 
-    fetch(`http://localhost:5000/api/conversations/${savedId}`)
+    fetch(`${API_BASE}/api/conversations/${savedId}`)
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data?.messages?.length > 0) {
@@ -137,7 +138,7 @@ export default function Home() {
   function speakText(text: string) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
-    const clean     = text.replace(/[#*`_~\[\]>]/g, "").slice(0, 400);
+    const clean     = text.replace(/[#*`_~[\]>]/g, "").slice(0, 400);
     const utterance = new SpeechSynthesisUtterance(clean);
     utterance.rate  = 0.92;
     utterance.pitch = 0.85;
@@ -150,7 +151,7 @@ export default function Home() {
   }
 
   async function streamResponse(prompt: string, fileContext?: string) {
-    const res = await fetch("http://localhost:5000/api/ai/stream", {
+    const res = await fetch(`${API_BASE}/api/ai/stream`, {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
       body:    JSON.stringify({ prompt, conversationId, fileContext }),
@@ -223,7 +224,7 @@ export default function Home() {
         formData.append("file", file);
         formData.append("prompt", cmd || `Analyze this PDF file: ${file.name}`);
         formData.append("conversationId", conversationId);
-        const res  = await fetch("http://localhost:5000/api/ai/ask-with-file", { method: "POST", body: formData });
+        const res  = await fetch(`${API_BASE}/api/ai/ask-with-file`, { method: "POST", body: formData });
         const data = await res.json();
         addLog({ type: "ai", text: data.reply || "No response." });
         const ttsOn = localStorage.getItem("sentience_tts") === "true";
@@ -247,7 +248,7 @@ export default function Home() {
 
     } catch {
       addLog({ type: "error", text: "Connection to AI failed." });
-      showToast("Backend offline — is port 5000 running?", "error");
+      showToast("Backend offline — is it running?", "error");
     }
 
     setLoading(false);
@@ -279,7 +280,7 @@ export default function Home() {
     switch (action) {
       case "new_chat":    handleNewConversation(); break;
       case "open_panel":  setActivePanel(value || "CORE"); break;
-      case "send_cmd":    handleCommand(value || ""); break;
+      case "send_cmd":    if (value) handleCommand(value); break;
       case "toggle_tts": {
         const cur = localStorage.getItem("sentience_tts") === "true";
         localStorage.setItem("sentience_tts", String(!cur));
@@ -303,7 +304,6 @@ export default function Home() {
 
       <SceneWrapper />
 
-      {/* HUD — wrap top-right panel in a ref so we can measure its height */}
       <SentienceHUD hudRef={hudRef} />
 
       <SpaceVignette />
@@ -313,7 +313,7 @@ export default function Home() {
         activePanel={activePanel}
       />
 
-      {/* ── Theme Switcher — dynamically positioned just below HUD panel ── */}
+      {/* Theme Switcher — dynamically positioned just below HUD panel */}
       <div
         className="pointer-events-none fixed right-6 z-[60]"
         style={{ top: hudHeight }}
@@ -323,7 +323,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── LEFT — AI Terminal ─────────────────────────────────────────── */}
+      {/* LEFT — AI Terminal */}
       <div className="pointer-events-none fixed left-6 top-1/2 z-50 -translate-y-1/2">
         <div className="pointer-events-auto">
           <AITerminal
@@ -338,7 +338,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── BOTTOM — Command Bar ───────────────────────────────────────── */}
+      {/* BOTTOM — Command Bar */}
       <div className="pointer-events-none fixed bottom-14 left-1/2 z-50 -translate-x-1/2">
         <div className="pointer-events-auto">
           <CommandBar
@@ -349,7 +349,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Ctrl+K hint ────────────────────────────────────────────────── */}
+      {/* Ctrl+K hint */}
       <div className="pointer-events-none fixed bottom-14 right-6 z-40 hidden md:block">
         <button
           className="pointer-events-auto text-[9px] font-mono text-cyan-400/20 hover:text-cyan-400/50 transition-colors border border-cyan-400/10 hover:border-cyan-400/20 rounded-lg px-2 py-1 flex items-center gap-1"

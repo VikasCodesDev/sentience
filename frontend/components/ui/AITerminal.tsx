@@ -1,5 +1,7 @@
 "use client";
 
+import API_BASE from "@/lib/api";
+
 import { useEffect, useRef, useState } from "react";
 
 type Log = {
@@ -58,7 +60,7 @@ export default function AITerminal({
   async function fetchConversations() {
     setLoadingConvs(true);
     try {
-      const res  = await fetch("http://localhost:5000/api/conversations");
+      const res  = await fetch(`${API_BASE}/api/conversations`);
       const data = await res.json();
       setConversations(data.conversations || []);
     } catch {}
@@ -67,17 +69,17 @@ export default function AITerminal({
 
   async function loadConversation(id: string) {
     try {
-      const res  = await fetch(`http://localhost:5000/api/conversations/${id}`);
+      const res  = await fetch(`${API_BASE}/api/conversations/${id}`);
       const data = await res.json();
       onLoadConversation(id, data.messages || []);
       setShowConvs(false);
-    } catch { onToast?.("Failed to load conversation", "error"); }
+    } catch { onToast?.("Failed to load conversation", "error`); }
   }
 
   async function deleteConversation(id: string, e: React.MouseEvent) {
     e.stopPropagation();
     try {
-      await fetch(`http://localhost:5000/api/conversations/${id}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/conversations/${id}`, { method: "DELETE" });
       setConversations(prev => prev.filter(c => c.id !== id));
       onToast?.("Conversation deleted", "info");
     } catch {}

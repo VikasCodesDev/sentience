@@ -1,5 +1,7 @@
 "use client";
 
+import API_BASE from "@/lib/api";
+
 import { useEffect, useState } from "react";
 
 type Conversation = {
@@ -27,7 +29,7 @@ export default function ConversationSidebar({ currentId, onNew, onLoad, onClose 
 
   async function fetchConversations() {
     try {
-      const res = await fetch("http://localhost:5000/api/conversations");
+      const res = await fetch(`${API_BASE}/api/conversations`);
       const data = await res.json();
       setConversations(data.conversations || []);
     } catch { }
@@ -36,7 +38,7 @@ export default function ConversationSidebar({ currentId, onNew, onLoad, onClose 
 
   async function loadConversation(id: string) {
     try {
-      const res = await fetch(`http://localhost:5000/api/conversations/${id}`);
+      const res = await fetch(`${API_BASE}/api/conversations/${id}`);
       const data = await res.json();
       onLoad(id, data.messages || []);
     } catch { }
@@ -45,7 +47,7 @@ export default function ConversationSidebar({ currentId, onNew, onLoad, onClose 
   async function deleteConversation(id: string, e: React.MouseEvent) {
     e.stopPropagation();
     try {
-      await fetch(`http://localhost:5000/api/conversations/${id}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/conversations/${id}`, { method: "DELETE" });
       setConversations((prev) => prev.filter((c) => c.id !== id));
     } catch { }
   }

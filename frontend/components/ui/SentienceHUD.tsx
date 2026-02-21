@@ -1,8 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import API_BASE from "@/lib/api";
 
-export default function SentienceHUD() {
+type Props = {
+  hudRef?: React.RefObject<HTMLDivElement | null>;
+};
+
+export default function SentienceHUD({ hudRef }: Props) {
   const [load, setLoad] = useState(72);
   const [uptime, setUptime] = useState("0s");
   const [startTime] = useState(Date.now());
@@ -22,7 +27,7 @@ export default function SentienceHUD() {
   useEffect(() => {
     const check = async () => {
       try {
-        await fetch("http://localhost:5000/");
+        await fetch(`${API_BASE}/`);
         setOnline(true);
       } catch {
         setOnline(false);
@@ -48,8 +53,11 @@ export default function SentienceHUD() {
         <p className="text-[9px] text-cyan-400/40 mt-0.5">UPTIME: {uptime}</p>
       </div>
 
-      {/* TOP RIGHT */}
-      <div className="absolute top-6 right-6 bg-black/30 backdrop-blur-xl border border-cyan-400/20 rounded-xl px-5 py-3 text-right shadow-[0_0_25px_rgba(0,255,255,0.1)]">
+      {/* TOP RIGHT — wrapped in ref so page.tsx can measure height */}
+      <div
+        ref={hudRef}
+        className="absolute top-6 right-6 bg-black/30 backdrop-blur-xl border border-cyan-400/20 rounded-xl px-5 py-3 text-right shadow-[0_0_25px_rgba(0,255,255,0.1)]"
+      >
         <p className="text-[9px] tracking-widest opacity-50 mb-1">NEURAL LOAD</p>
         <p className="text-2xl font-bold text-cyan-300">{load}%</p>
         <div className="mt-1 w-full bg-cyan-900/30 rounded-full h-1">
