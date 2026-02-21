@@ -38,7 +38,7 @@ export default function SentienceHUD() {
       {/* TOP LEFT */}
       <div className="absolute top-6 left-6 bg-black/30 backdrop-blur-xl border border-cyan-400/20 rounded-xl px-5 py-3 shadow-[0_0_25px_rgba(0,255,255,0.1)]">
         <p className="text-[9px] tracking-widest opacity-50 mb-1">SYSTEM</p>
-        <p className="text-sm font-semibold text-cyan-300">SENTIENCE v2.0</p>
+        <p className="text-sm font-semibold text-cyan-300">SENTIENCE v4.0</p>
         <div className="flex items-center gap-1.5 mt-0.5">
           <div className={`w-1.5 h-1.5 rounded-full ${online ? "bg-emerald-400 animate-pulse" : "bg-red-400"}`} />
           <p className={`text-[10px] ${online ? "text-emerald-300" : "text-red-400"}`}>

@@ -52,7 +52,7 @@ export default function SidePanel({ panel, onClose, onToast, onLog, onSimMsg }: 
             <span className="text-xl">{panelIcons[panel]}</span>
             <div>
               <h2 className="text-xs font-bold text-cyan-300 tracking-widest">{PANEL_TITLES[panel]}</h2>
-              <p className="text-[9px] text-cyan-400/40 mt-0.5">SENTIENCE v3.0</p>
+              <p className="text-[9px] text-cyan-400/40 mt-0.5">SENTIENCE v4.0</p>
             </div>
           </div>
           <button onClick={onClose} className="text-cyan-400/40 hover:text-red-400 w-7 h-7 flex items-center justify-center border border-cyan-400/10 hover:border-red-400/30 rounded-lg transition-all">✕</button>
@@ -191,7 +191,7 @@ function CoreContent({ tab, onToast }: { tab: string; onToast: any }) {
     <div>
       <Section title="System Status">
         <Stat label="STATUS" value="ONLINE" color="text-emerald-400" />
-        <Stat label="VERSION" value="SENTIENCE v3.0" />
+        <Stat label="VERSION" value="SENTIENCE v4.0" />
         <Stat label="UPTIME" value={data.uptimeStr} color="text-emerald-400" />
         <Stat label="NEURAL LOAD" value={`${data.neuralLoad}%`} color={data.neuralLoad > 80 ? "text-yellow-300" : "text-emerald-400"} />
         <Stat label="MEMORY HEAP" value={`${data.memoryUsageMB} MB`} />

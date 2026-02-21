@@ -40,7 +40,7 @@ async function readAsText(file: File): Promise<string> {
 
 export default function Home() {
   const [logs,          setLogs]          = useState<Log[]>([
-    { type: "system", text: "SENTIENCE CORE v3.0 INITIALIZED" },
+    { type: "system", text: "SENTIENCE CORE v4.0 INITIALIZED" },
     { type: "system", text: "All systems nominal. Awaiting command..." },
   ]);
   const [loading,       setLoading]       = useState(false);
@@ -98,7 +98,7 @@ export default function Home() {
       .then(data => {
         if (data?.messages?.length > 0) {
           const restored: Log[] = [
-            { type: "system", text: "SENTIENCE CORE v3.0 INITIALIZED", timestamp: ts },
+            { type: "system", text: "SENTIENCE CORE v4.0 INITIALIZED", timestamp: ts },
             { type: "system", text: `Memory restored — ${Math.floor(data.messages.length / 2)} exchanges in context.`, timestamp: ts },
           ];
           for (const m of data.messages)
@@ -106,14 +106,14 @@ export default function Home() {
           setLogs(restored);
         } else {
           setLogs([
-            { type: "system", text: "SENTIENCE CORE v3.0 INITIALIZED",         timestamp: ts },
+            { type: "system", text: "SENTIENCE CORE v4.0 INITIALIZED",         timestamp: ts },
             { type: "system", text: "All systems nominal. Awaiting command...", timestamp: ts },
           ]);
         }
       })
       .catch(() => {
         setLogs([
-          { type: "system", text: "SENTIENCE CORE v3.0 INITIALIZED",         timestamp: ts },
+          { type: "system", text: "SENTIENCE CORE v4.0 INITIALIZED",         timestamp: ts },
           { type: "system", text: "All systems nominal. Awaiting command...", timestamp: ts },
         ]);
       });
