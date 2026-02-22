@@ -1,127 +1,78 @@
-SENTIENCE — Futuristic AI Interface System 🌌
+# Sentience — Futuristic AI Interface 🧠⚡
 
-SENTIENCE is a next-generation AI operating interface — a cinematic, Gen-Z futuristic platform that combines conversational AI, system-like controls, knowledge memory, tools, and intelligent automation into one immersive experience.
+![Sentience Preview](./sentience_preview.png)
 
-🚀Overview
-SENTIENCE is not just a chatbot.
-It is designed as a living AI system interface — similar to a sci-fi OS core — capable of:
-Conversational intelligence
-Multi-modal inputs (text, files, images)
-Persistent memory
-Tool execution
-Coding assistance
-Knowledge storage
-Real-time system interaction
-Expandable AI architecture
-Built as a flagship portfolio project showcasing Full-Stack + AI + Advanced UI Engineering.
+![Next.js](https://img.shields.io/badge/Next.js-14-00d9ff?style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38bdf8?style=for-the-badge)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animation-b000ff?style=for-the-badge)
+![Groq AI](https://img.shields.io/badge/Groq-AI-ff8800?style=for-the-badge)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-00ff88?style=for-the-badge)
+![Express](https://img.shields.io/badge/Express-API-ffffff?style=for-the-badge)
 
-🧠 Core Features
-🤖 Conversational AI Core
-Natural language interaction
-Context-aware replies
-Personality modes (Core, Analyst, Creative, Cyber, Tutor)
-Persistent conversation memory
-Futuristic AI tone
+A futuristic AI-powered interface designed as a digital consciousness system.  
+Sentience provides real-time AI interaction, advanced tools, and a sci-fi command environment inspired by next-generation operating systems.
 
-🧩 Cognitive Engine
-Detects user intent and routes to appropriate system modules:
-Mode switching
-Tool invocation
-Coding requests
-Knowledge queries
-Utility commands
+🌐 Live Website: https://sentience-og.vercel.app/
 
-💻 Coding Engine (DEV-CORE)
-Elite software assistant for developers:
-Production-ready code generation
-Clean architecture suggestions
-Debugging help
-Explanations on demand
-Low-temperature precise outputs
+## ✨ Core Features
 
-🧠 Persistent Memory System
-Remembers conversation context across sessions:
-Stores recent dialogue
-Memory trimming for performance
-Clear memory command
-File-based persistence
+### 🧠 Advanced AI Interaction
+- Real-time conversational AI
+- High-speed responses using Groq LLM
+- Context-aware conversations
+- Intelligent command handling
+- Multi-purpose AI assistant capabilities
 
-📁 Knowledge & File Memory
-Upload documents to extend AI knowledge base:
-Stores extracted content
-Injects into AI context
-Enables document-aware responses
-Works across sessions
+### ⚡ AI Tools & Capabilities
+Sentience functions as a powerful digital AI system:
 
-🛠️ Built-in Tools
-Local utilities:
-⏰ Time / Date
-🧮 Calculations
-🧹 Memory management
+- 💬 Smart Chat — Natural language interaction
+- 📄 File Analysis — Text & document understanding
+- 🖼️ Image Analysis — Visual content processing
+- 🧮 Problem Solving — Coding & logical assistance
+- 🔍 Knowledge Queries — Instant information retrieval
+- 🧠 Context Memory — Maintains conversation flow
+- ⚙️ System-style command responses
 
-External integrations:
-🌤 Weather lookup
-📰 News fetching
-🌐 IP detection
-😂 Joke generator
-💬 Quotes
-🎭 Personality Modes
+### 🎨 Futuristic Interface & Experience
+- 🌌 Sci-fi terminal-style UI
+- ✨ Neon glow visual design
+- 🧊 Glassmorphism panels
+- 🌐 Dynamic animated background
+- 🧲 Custom cursor effects
+- ⚡ Smooth motion transitions
+- 🖥️ AI dashboard feel
+- 📱 Fully responsive layout
 
-🎨 Interface Features
-🌌 Cinematic UI Experience
-Futuristic orbital core visualization
-Space-themed interface
-Animated background
-HUD elements
-System-style panels
+### 🔐 System Architecture
+- Frontend + Backend separation
+- Secure API communication
+- Environment-based configuration
+- Production-ready deployment setup
 
-🖱️ Advanced Interaction Effects
-Orb cursor
-Cursor trails
-Magnetic UI effects
-Click ripple feedback
-Smooth animations
+## 🚀 Tech Stack
 
-🧩 Command Bar
-Central input system:
-Text commands
-File upload trigger
-Execution controls
-Real-time processing feedback
+### 🧩 Frontend
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **UI Effects**: Custom interactions & shaders
+- **State Management**: React Hooks / Context
 
-🖥️ AI Terminal Panel
-Displays system logs and AI responses in terminal style.
+### ⚙️ Backend
+- Node.js + Express
+- REST API architecture
+- Groq AI integration
+- File & image processing support
 
-🧭 Navigation Nodes
-System modules (UI buttons):
-CORE
-NETWORK
-MEMORY
-ANALYTICS
-Designed for future expansion into functional subsystems.
+### 🧠 AI Engine
+- Groq LLM API
+- High-speed inference
+- Production-ready AI responses
 
-🏗️ System Architecture
-Frontend
-Next.js (App Router)
-React
-TypeScript
-Tailwind CSS
-Custom UI components
-Advanced animation layers
-
-Backend
-Node.js
-Express.js
-TypeScript
-REST API architecture
-Modular service design
-AI Integration
-Groq API (Llama models)
-Prompt engineering layer
-Personality injection
-Context assembly pipeline
-Data & Storage
-File-based memory store
-Uploaded file repository
-JSON persistence
-Local processing pipeline
+### 🌐 Deployment
+- Frontend: Vercel
+- Backend: Render
+- Environment-based configuration
