@@ -1,14 +1,35 @@
 import fs from "fs";
 import path from "path";
 
+/** Extract text from PDF buffer; supports pdf-parse 1.x (callable) and 2.x (PDFParse class). */
+async function extractPdfTextFromBuffer(buffer: Buffer): Promise<string> {
+  const pdfParse = require("pdf-parse");
+  if (typeof pdfParse === "function") {
+    const result = (await pdfParse(buffer)) as { text?: string };
+    return result?.text ?? "";
+  }
+  if (pdfParse.PDFParse) {
+    const parser = new pdfParse.PDFParse({ data: buffer });
+    try {
+      const textResult = await parser.getText();
+      const text = (textResult && typeof textResult === "object" && "text" in textResult) ? (textResult as { text: string }).text : "";
+      await parser.destroy?.();
+      return text;
+    } catch {
+      await parser.destroy?.();
+      return "";
+    }
+  }
+  return "";
+}
+
 export async function analyzeFile(filePath: string, mimeType: string, originalName: string): Promise<string> {
   try {
     // PDF
     if (mimeType === "application/pdf") {
-      const pdfParse = require("pdf-parse");
       const buffer = fs.readFileSync(filePath);
-      const data = await pdfParse(buffer);
-      return data.text || "No readable text found in PDF.";
+      const text = await extractPdfTextFromBuffer(buffer);
+      return text || "No readable text found in PDF.";
     }
 
     // DOCX

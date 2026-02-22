@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import Groq from "groq-sdk";
 import multer from "multer";
-import pdfParse from "pdf-parse";
 
 import { loadMemory, saveMemory, clearMemory } from "../utils/memory.store";
 import { getFilesContext } from "../utils/file.memory";
@@ -16,6 +15,28 @@ import { webSearch } from "../services/web.search";
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 const groq   = new Groq({ apiKey: process.env.GROQ_API_KEY! });
+
+/** Extract text from PDF buffer; supports pdf-parse 1.x (callable) and 2.x (PDFParse class). */
+async function extractPdfText(buffer: Buffer): Promise<string> {
+  const pdfParse = require("pdf-parse");
+  if (typeof pdfParse === "function") {
+    const result = await pdfParse(buffer) as { text?: string };
+    return result?.text ?? "";
+  }
+  if (pdfParse.PDFParse) {
+    const parser = new pdfParse.PDFParse({ data: buffer });
+    try {
+      const textResult = await parser.getText();
+      const text = (textResult && typeof textResult === "object" && "text" in textResult) ? (textResult as { text: string }).text : "";
+      await parser.destroy?.();
+      return text;
+    } catch {
+      await parser.destroy?.();
+      return "";
+    }
+  }
+  return "";
+}
 
 type Message = { role: "user" | "assistant"; content: string };
 type Mode    = "core" | "analyst" | "creative" | "cyber" | "tutor" | "dev";
@@ -280,15 +301,17 @@ router.post("/ask-with-file", upload.single("file"), async (req: Request, res: R
 
     if (file.mimetype === "application/pdf") {
       try {
-        const parsed  = await pdfParse(file.buffer);
-        let pdfText   = parsed.text.trim();
+        const fileWithBuffer = file as { buffer?: Buffer };
+        const pdfTextRaw = await extractPdfText(fileWithBuffer.buffer!);
+        let pdfText   = (pdfTextRaw || "").trim();
         if (pdfText.length > 12000) pdfText = pdfText.slice(0, 12000) + "\n\n[Truncated...]";
         fileContext = `\n\n=== PDF FILE: ${file.originalname} ===\n${pdfText}\n=== END PDF ===`;
       } catch {
         fileContext = `\n\n=== PDF FILE: ${file.originalname} ===\n[Could not extract text — may be image-based.]\n=== END PDF ===`;
       }
     } else {
-      const text  = file.buffer.toString("utf-8").slice(0, 12000);
+      const fileWithBuffer = file as { buffer?: Buffer };
+      const text  = (fileWithBuffer.buffer ?? Buffer.from("")).toString("utf-8").slice(0, 12000);
       fileContext = `\n\n=== FILE: ${file.originalname} ===\n${text}\n=== END FILE ===`;
     }
 

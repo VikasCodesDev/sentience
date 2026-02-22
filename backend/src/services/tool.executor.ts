@@ -43,14 +43,14 @@ export async function executeTool(intent: Intent, text: string): Promise<string 
       trackTool("news");
       try {
         const r = await fetch("https://hacker-news.firebaseio.com/v0/topstories.json");
-        const ids = await r.json();
+        const ids = (await r.json()) as number[];
         const top5 = ids.slice(0, 5);
-        const stories = await Promise.all(
+        const stories = (await Promise.all(
           top5.map(async (id: number) => {
             const s = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-            return s.json();
+            return s.json() as Promise<{ title?: string }>;
           })
-        );
+        ));
         return (
           "🔥 Top Tech Headlines (Hacker News):\n" +
           stories
@@ -67,8 +67,8 @@ export async function executeTool(intent: Intent, text: string): Promise<string 
       trackTool("joke");
       try {
         const r = await fetch("https://official-joke-api.appspot.com/random_joke");
-        const j = await r.json();
-        return `😄 ${j.setup}\n\n${j.punchline}`;
+        const j = (await r.json()) as { setup?: string; punchline?: string };
+        return `😄 ${j.setup ?? ""}\n\n${j.punchline ?? ""}`;
       } catch {
         return "Joke server offline. Here's one: Why do programmers prefer dark mode? Because light attracts bugs! 🐛";
       }
@@ -91,8 +91,8 @@ export async function executeTool(intent: Intent, text: string): Promise<string 
       trackTool("ip");
       try {
         const r = await fetch("https://api.ipify.org?format=json");
-        const d = await r.json();
-        return `🌐 Your public IP: ${d.ip}`;
+        const d = (await r.json()) as { ip?: string };
+        return `🌐 Your public IP: ${d.ip ?? "unknown"}`;
       } catch {
         return "Could not fetch IP address.";
       }

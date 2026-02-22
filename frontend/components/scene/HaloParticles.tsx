@@ -34,7 +34,6 @@ const r0 = new Float32Array(count);
 const y0 = new Float32Array(count);
 const spd = new Float32Array(count);
 
-```
 for (let i = 0; i < count; i++) {
   const a = Math.random() * Math.PI * 2;
   const r = radius * (0.92 + Math.random() * 0.18);
@@ -53,8 +52,6 @@ for (let i = 0; i < count; i++) {
 
 baseDataRef.current = { baseAngle: ang, baseR: r0, baseY: y0, speeds: spd };
 return { positions: pos };
-```
-
 }, [count, radius, thickness]);
 
 const geometry = useMemo(() => {
@@ -67,7 +64,6 @@ useFrame((state) => {
 const base = baseDataRef.current;
 if (!base) return;
 
-```
 const attr = geometry.getAttribute("position");
 if (!attr) return;
 
@@ -96,8 +92,6 @@ if (pointsRef.current) {
   pointsRef.current.rotation.y = t * 0.22;
   pointsRef.current.rotation.x = Math.sin(t * 0.07) * 0.08;
 }
-```
-
 });
 
 return ( <points ref={pointsRef} geometry={geometry} frustumCulled={false}> <pointsMaterial

@@ -368,12 +368,3 @@ function AnalyticsPanel({ data }: { data: any }) {
     </div>
   );
 }
-
-function StatRow({ label, value, color = "text-cyan-200" }: { label: string; value: any; color?: string }) {
-  return (
-    <div className="flex items-center justify-between py-2 border-b border-cyan-400/10">
-      <span className="text-[11px] text-cyan-400/50 tracking-wide">{label}</span>
-      <span className={`text-xs font-semibold ${color}`}>{String(value)}</span>
-    </div>
-  );
-}
