@@ -58,7 +58,7 @@ export default function Footer() {
           <span className="text-cyan-400/20 text-xs">·</span>
           <span className="text-[9px] font-mono text-cyan-400/30 tracking-widest">
             CRAFTED BY{" "}
-            <span className="text-cyan-300/60 font-semibold tracking-widest">VIKAS</span>
+            <span className="text-cyan-300/60 font-semibold tracking-widest">VIKAS MISHRA</span>
           </span>
         </div>
 
